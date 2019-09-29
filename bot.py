@@ -57,10 +57,7 @@ class TwitchBot(irc.bot.SingleServerIRCBot):
 def start_voting(opts, question):
     global bot
 
-    # End current vote
-    if bot is not None:
-        end_vote()
-
+    # Create tally
     tally = {}
 
     # Add options
@@ -69,8 +66,15 @@ def start_voting(opts, question):
 
     print(tally)
 
-    bot = TwitchBot(username, token, channel, tally, {}, question)
-    bot.start()
+    # Use running bot
+    if bot is not None:
+        bot.tally = tally
+        bot.question = question
+        bot.voters = {}
+    # Start the bot
+    else:
+        bot = TwitchBot(username, token, channel, tally, {}, question)
+        bot.start()
 
 
 def is_voting():
