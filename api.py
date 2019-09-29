@@ -13,13 +13,16 @@ app = Flask(__name__)
 @app.route('/votes')
 def get_votes():
     if bot.is_voting():
-        return make_response(jsonify(data={
+        response = make_response(jsonify(data={
             "title": bot.get_question(),
             "votes": list(bot.get_votes().values()),
             "labels": list(bot.get_votes().keys())
         }), 200)
     else:
-        return make_response(jsonify(data={}), 200)
+        response = make_response(jsonify(data={}), 200)
+
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route('/vote', methods=['POST'])
