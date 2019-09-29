@@ -3,6 +3,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from flask import Flask, request, make_response, jsonify
+import nltk
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 
 import azure.cognitiveservices.speech as speechsdk
 import string
@@ -60,15 +63,24 @@ def doSpeechRec():
 def parseKeywordPhrase(phrase):
     """Return options to be voted on"""
     phrase = phrase.translate(str.maketrans("", "", string.punctuation))  # Remove all punctuation.
-    phrase = phrase.replace(KEYWORD, "")  # Remove the keyword.
+    #phrase = phrase.replace(KEYWORD, "")  # Remove the keyword.
 
-    for _, fluff in enumerate(FLUFF_PHRASES):
-        phrase = phrase.replace(fluff, "")
+    #for _, fluff in enumerate(FLUFF_PHRASES):
+    #    phrase = phrase.replace(fluff, "")
 
     phrase = phrase.lstrip(" ")  # Remove whitespace.
-    opts = phrase.split(" or ")
 
-    return opts
+    #opts = phrase.split(" or ")
+
+    text = nltk.word_tokenize(phrase)
+    print(nltk.pos_tag(text))
+
+    #words = phrase.split(" ")
+    #tokenizer = MWETokenizer()
+    #test = tokenizer.tokenize(words)
+    #print(test)
+
+    return text
 
 
 @app.route('/votes')
@@ -77,4 +89,10 @@ def get_votes():
 
 
 # == Start Speech Rec ==
-doSpeechRec()
+
+if __name__ == "__main__":
+    if DEBUG:
+        parseKeywordPhrase("ok gamers should we go left or right")
+        #parseKeywordPhrase("In a little or a little bit or a lot in spite of")
+    else:
+        doSpeechRec()
