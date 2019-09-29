@@ -1,13 +1,5 @@
-# load env vars
-from dotenv import load_dotenv
-
-load_dotenv()
-
-from flask import Flask, request, make_response, jsonify
-
 import azure.cognitiveservices.speech as speechsdk
 import string
-import time
 import os
 
 import bot
@@ -17,8 +9,6 @@ KEYWORD = "ok gamers"  # lowercase please
 DEBUG = True  # for testing purposes
 
 FLUFF_PHRASES = ["should i", "should we", "do i", "do we"]  # fluff phrases to remove when considering vote intent
-
-app = Flask(__name__)
 
 
 def doSpeechRec():
@@ -63,18 +53,6 @@ def parseKeywordPhrase(phrase):
     opts = phrase.split(" or ")
 
     return opts
-
-
-@app.route('/votes')
-def get_votes():
-    if bot.is_voting():
-        return make_response(jsonify(data={
-            "title": bot.get_question(),
-            "votes": bot.get_votes().values(),
-            "labels": bot.get_votes().keys()
-        }), 200)
-    else:
-        return make_response(jsonify(data={}), 200)
 
 
 # == Start Speech Rec ==
