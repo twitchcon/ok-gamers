@@ -27,8 +27,6 @@ def doSpeechRec():
 
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
 
-    foundKeyword = False
-
     def detectKeyword(evt):
         phrase = evt.result.text.lower()
         print(phrase)
@@ -38,9 +36,6 @@ def doSpeechRec():
 
             # Start vote
             bot.start_voting(opts, phrase)
-
-            nonlocal foundKeyword
-            foundKeyword = True
 
     # Callback functions
     if DEBUG:
@@ -52,10 +47,8 @@ def doSpeechRec():
 
     speech_recognizer.start_continuous_recognition()
 
-    while not foundKeyword:
-        time.sleep(.5)
-
-    speech_recognizer.stop_continuous_recognition()
+    # TODO: Turn it off
+    # speech_recognizer.stop_continuous_recognition()
 
 
 def parseKeywordPhrase(phrase):
@@ -74,11 +67,14 @@ def parseKeywordPhrase(phrase):
 
 @app.route('/votes')
 def get_votes():
-    return make_response(jsonify(data={
-        "title": bot.get_question(),
-        "votes": bot.get_votes().values(),
-        "labels": bot.get_votes().keys()
-    }), 200)
+    if bot.is_voting():
+        return make_response(jsonify(data={
+            "title": bot.get_question(),
+            "votes": bot.get_votes().values(),
+            "labels": bot.get_votes().keys()
+        }), 200)
+    else:
+        return make_response(jsonify(data={}), 200)
 
 
 # == Start Speech Rec ==

@@ -70,6 +70,11 @@ def start_voting(opts, question):
     bot.start()
 
 
+def is_voting():
+    global bot
+    return bot is not None
+
+
 def get_question():
     global bot
     return bot.question
