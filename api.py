@@ -19,7 +19,11 @@ def get_votes():
             "labels": list(bot.get_votes().keys())
         }), 200)
     else:
-        response = make_response(jsonify(data={}), 200)
+        response = make_response(jsonify(data={
+            "title": "No ongoing poll!",
+            "votes": [],
+            "labels": []
+        }), 200)
 
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
