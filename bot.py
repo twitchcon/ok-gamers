@@ -70,6 +70,11 @@ def start_voting(opts, question):
     bot.start()
 
 
+def get_question():
+    global bot
+    return bot.question
+
+
 def end_vote():
     global bot
     bot.die()

@@ -1,5 +1,6 @@
 # load env vars
 from dotenv import load_dotenv
+
 load_dotenv()
 
 from flask import Flask, request, make_response, jsonify
@@ -73,7 +74,11 @@ def parseKeywordPhrase(phrase):
 
 @app.route('/votes')
 def get_votes():
-    return make_response(jsonify(votes=bot.get_votes()), 200)
+    return make_response(jsonify(data={
+        "title": bot.get_question(),
+        "votes": bot.get_votes().values(),
+        "labels": bot.get_votes().keys()
+    }), 200)
 
 
 # == Start Speech Rec ==
