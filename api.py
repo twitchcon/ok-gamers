@@ -35,3 +35,6 @@ def start_vote():
     print(body)
     bot.start_voting(body['opts'], body['phrase'])
     return make_response(jsonify(success=True), 200)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', ssl_context='adhoc')

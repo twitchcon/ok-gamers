@@ -1,9 +1,9 @@
 import irc.bot
 import os
 
-username = "hassansyyid"
+username = "snowshift1"
 token = os.environ['BOT_OAUTH_TOKEN']
-channel = "hassansyyid"
+channel = "snowshift1"
 bot = None
 
 
