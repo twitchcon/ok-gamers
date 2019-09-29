@@ -85,7 +85,7 @@ def get_question():
 
 def end_vote():
     global bot
-    bot.die()
+    bot.disconnect()
 
 
 def get_votes():

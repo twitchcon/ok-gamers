@@ -25,4 +25,5 @@ def get_votes():
 @app.route('/vote', methods=['POST'])
 def start_vote():
     body = request.json
+    print(body)
     bot.start_voting(body['opts'], body['phrase'])
