@@ -22,15 +22,22 @@ class TwitchBot(irc.bot.SingleServerIRCBot):
         'Connecting to ' + server + ' on port ' + str(port) + '...'
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port, token)], username, channel)
 
+    def announce_vote(self):
+        c = self.connection
+
+        c.privmsg(self.channel, "!!!!")
+        c.privmsg(self.channel, "== VOTE ==")
+        c.privmsg(self.channel, self.question)
+        c.privmsg(self.channel, "!!!!")
+
     def on_welcome(self, c, e):
         print
         'Joining ' + self.channel
 
         c.join(self.channel)
 
-        c.privmsg(self.channel, "!!!!")
-        c.privmsg(self.channel, self.question)
-        c.privmsg(self.channel, "!!!!")
+        # Announce vote
+        self.announce_vote()
 
     def on_pubmsg(self, c, e):
         print(e)
@@ -71,6 +78,7 @@ def start_voting(opts, question):
         bot.tally = tally
         bot.question = question
         bot.voters = {}
+        bot.announce_vote()
     # Start the bot
     else:
         bot = TwitchBot(username, token, channel, tally, {}, question)
