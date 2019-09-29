@@ -15,7 +15,7 @@ def get_votes():
     if bot.is_voting():
         return make_response(jsonify(data={
             "title": bot.get_question(),
-            "votes": bot.get_votes().values(),
+            "votes": list(bot.get_votes().values()),
             "labels": list(bot.get_votes().keys())
         }), 200)
     else:
