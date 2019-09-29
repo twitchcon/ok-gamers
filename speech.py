@@ -1,8 +1,13 @@
-import azure.cognitiveservices.speech as speechsdk
-import string
-import os
+# load env vars
+from dotenv import load_dotenv
 
-import bot
+load_dotenv()
+
+import azure.cognitiveservices.speech as speechsdk
+import os
+import requests
+import string
+import time
 
 # Setup variables
 KEYWORD = "ok gamers"  # lowercase please
@@ -25,7 +30,7 @@ def doSpeechRec():
             opts = parseKeywordPhrase(phrase)
 
             # Start vote
-            bot.start_voting(opts, phrase)
+            requests.post('http://127.0.0.1:5000/vote', json={"opts": opts, "phrase": phrase})
 
     # Callback functions
     if DEBUG:
@@ -37,7 +42,11 @@ def doSpeechRec():
 
     speech_recognizer.start_continuous_recognition()
 
-    # TODO: Turn it off
+    # Keep listening
+    while True:
+        time.sleep(0.5)
+
+    # Turn it off
     # speech_recognizer.stop_continuous_recognition()
 
 
