@@ -4,6 +4,7 @@ import os
 username = "hassansyyid"
 token = os.environ['BOT_OAUTH_TOKEN']
 channel = "hassansyyid"
+bot = None
 
 
 class TwitchBot(irc.bot.SingleServerIRCBot):
@@ -64,5 +65,16 @@ def start_voting(opts, question):
 
     voters = {}
 
+    global bot
     bot = TwitchBot(username, token, channel, tally, voters, question)
     bot.start()
+
+
+def end_vote():
+    global bot
+    bot.die()
+
+
+def get_votes():
+    global bot
+    return {} if (bot is None) else bot.tally
