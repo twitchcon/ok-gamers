@@ -27,3 +27,4 @@ def start_vote():
     body = request.json
     print(body)
     bot.start_voting(body['opts'], body['phrase'])
+    return make_response(jsonify(success=True), 200)
