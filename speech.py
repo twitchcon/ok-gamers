@@ -64,5 +64,6 @@ def parseKeywordPhrase(phrase):
     return opts
 
 
-# == Start Speech Rec ==
-doSpeechRec()
+if __name__ == "__main__":
+    # == Start Speech Rec ==
+    doSpeechRec()
